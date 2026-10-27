@@ -1,4 +1,6 @@
 from datetime import date, timedelta
+import os
+import secrets
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
@@ -23,6 +25,7 @@ class Command(BaseCommand):
         if not settings.DEBUG:
             raise CommandError("Demo data can only be seeded when DEBUG is enabled.")
 
+        demo_password = os.environ.get('DEMO_PASSWORD') or secrets.token_urlsafe(32)
         self.stdout.write("Seeding LifeDrop database...")
 
         # 1. Superuser / Admin
@@ -38,7 +41,7 @@ class Command(BaseCommand):
             }
         )
         if created:
-            admin_user.set_password("AdminPass123!")
+            admin_user.set_password(demo_password)
             admin_user.save()
             self.stdout.write(self.style.SUCCESS("Created demo superuser: admin"))
 
@@ -55,7 +58,7 @@ class Command(BaseCommand):
             }
         )
         if created:
-            staff_user.set_password("StaffPass123!")
+            staff_user.set_password(demo_password)
             staff_user.save()
             self.stdout.write(self.style.SUCCESS("Created demo hospital staff: staff_dr_sharma"))
 
@@ -71,7 +74,7 @@ class Command(BaseCommand):
             }
         )
         if created:
-            requester_user.set_password("RequesterPass123!")
+            requester_user.set_password(demo_password)
             requester_user.save()
             self.stdout.write(self.style.SUCCESS("Created demo requester: requester_priya"))
 
@@ -166,7 +169,7 @@ class Command(BaseCommand):
                 }
             )
             if u_created:
-                d_user.set_password("DonorPass123!")
+                d_user.set_password(demo_password)
                 d_user.save()
 
             profile, p_created = DonorProfile.objects.get_or_create(

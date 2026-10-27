@@ -50,5 +50,6 @@ The GitHub Actions workflow runs Django checks, verifies migration state, runs t
 - Use PostgreSQL for deployment. The local SQLite database is ignored by Git and is not included in production.
 - Keep `SECRET_KEY` and the database URL in Railway's private service variables only.
 - Do not run `python manage.py seed_data` in production. It creates fictional sample records and is intentionally blocked when `DEBUG=False`.
+- For local demo accounts, optionally set `$env:DEMO_PASSWORD` in PowerShell before running `python manage.py seed_data`. If it is unset, the command generates a random password instead of using a committed default.
 - This application coordinates donor and requester communications; it is not a clinical blood bank. Review privacy, security, and clinical operations before entering real patient or donor information.
 - The GitHub Pages address cannot serve the interactive Django application. Once Railway has generated its public domain, the Pages entrypoint can be changed to link or redirect to that exact URL if desired.
