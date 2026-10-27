@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card card-lifedrop p-4 shadow-sm">
+                <div class="text-center mb-4">
+                    <span class="navbar-brand-badge fs-4 mb-2 d-inline-block">
+                        <i class="bi bi-droplet-fill"></i> LifeDrop
+                    </span>
+                    <h3 class="fw-bold mb-1">Account Login</h3>
+                    <p class="text-secondary small">Access your donor or requester portal</p>
+                </div>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label small fw-semibold">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-person"></i></span>
+                            <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username" required autofocus>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label small fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
+                            <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-emergency w-100 py-2 mt-2">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Log In to LifeDrop
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-3 border-top text-center">
+                    <p class="small text-secondary mb-1">
+                        Don't have an account yet?
+                    </p>
+                    <a href="{% url 'register' %}" class="fw-bold text-danger text-decoration-none">
+                        Create a Free Account &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- Demo Accounts Reference Helper -->
+            <div class="card card-lifedrop p-3 mt-3 bg-light border-0 small">
+                <div class="fw-bold text-navy mb-1"><i class="bi bi-info-circle me-1"></i> Pre-seeded Test Accounts:</div>
+                <div class="text-secondary">
+                    <div><strong>Admin:</strong> <code>admin</code> / <code>AdminPass123!</code></div>
+                    <div><strong>Hospital Staff:</strong> <code>staff_dr_sharma</code> / <code>StaffPass123!</code></div>
+                    <div><strong>Requester:</strong> <code>requester_priya</code> / <code>RequesterPass123!</code></div>
+                    <div><strong>Donor (O+):</strong> <code>donor_arjun</code> / <code>DonorPass123!</code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

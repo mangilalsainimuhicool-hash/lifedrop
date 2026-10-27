@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Emergency Blood Request — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card card-lifedrop p-4 p-md-5 shadow">
+                <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                    <span class="blood-badge me-3"><i class="bi bi-droplet-fill"></i></span>
+                    <div>
+                        <span class="badge bg-danger text-uppercase px-2 py-1 mb-1 fw-bold">Emergency Dispatch</span>
+                        <h2 class="fw-bold mb-0">Post Urgent Blood Request</h2>
+                        <small class="text-secondary">Matching voluntary donors in your city will be alerted immediately.</small>
+                    </div>
+                </div>
+
+                <!-- Mandatory Clinical Notice -->
+                <div class="alert alert-clinical-disclaimer mb-4">
+                    <div class="fw-bold text-danger mb-1"><i class="bi bi-exclamation-diamond-fill me-1"></i> Patient Coordination Protocol</div>
+                    <div class="small text-secondary">{{ clinical_disclaimer }}</div>
+                </div>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    <h5 class="fw-bold text-navy mb-3"><i class="bi bi-person-fill text-danger me-1"></i> Patient & Blood Requirements</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="{{ form.patient_name.id_for_label }}" class="form-label small fw-semibold">Patient Full Name *</label>
+                            {{ form.patient_name }}
+                            {% if form.patient_name.errors %}<div class="text-danger small">{{ form.patient_name.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <label for="{{ form.blood_group.id_for_label }}" class="form-label small fw-semibold">Blood Group *</label>
+                            {{ form.blood_group }}
+                            {% if form.blood_group.errors %}<div class="text-danger small">{{ form.blood_group.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <label for="{{ form.units_needed.id_for_label }}" class="form-label small fw-semibold">Units Needed *</label>
+                            {{ form.units_needed }}
+                            {% if form.units_needed.errors %}<div class="text-danger small">{{ form.units_needed.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="{{ form.priority.id_for_label }}" class="form-label small fw-semibold">Emergency Priority *</label>
+                            {{ form.priority }}
+                            {% if form.priority.errors %}<div class="text-danger small">{{ form.priority.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="{{ form.deadline.id_for_label }}" class="form-label small fw-semibold">Critical Deadline *</label>
+                            {{ form.deadline }}
+                            <div class="form-text small">{{ form.deadline.help_text }}</div>
+                            {% if form.deadline.errors %}<div class="text-danger small">{{ form.deadline.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold text-navy mb-3 pt-2 border-top"><i class="bi bi-hospital-fill text-danger me-1"></i> Hospital & Location Details</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="{{ form.hospital_name.id_for_label }}" class="form-label small fw-semibold">Hospital Name *</label>
+                            {{ form.hospital_name }}
+                            {% if form.hospital_name.errors %}<div class="text-danger small">{{ form.hospital_name.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="{{ form.hospital_city.id_for_label }}" class="form-label small fw-semibold">Hospital City / District *</label>
+                            {{ form.hospital_city }}
+                            {% if form.hospital_city.errors %}<div class="text-danger small">{{ form.hospital_city.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <label for="{{ form.hospital_address.id_for_label }}" class="form-label small fw-semibold">Hospital Address / Ward / Room *</label>
+                            {{ form.hospital_address }}
+                            {% if form.hospital_address.errors %}<div class="text-danger small">{{ form.hospital_address.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold text-navy mb-3 pt-2 border-top"><i class="bi bi-telephone-fill text-danger me-1"></i> Emergency Contact Coordinator</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="{{ form.contact_name.id_for_label }}" class="form-label small fw-semibold">Coordinator / Relative Name *</label>
+                            {{ form.contact_name }}
+                            {% if form.contact_name.errors %}<div class="text-danger small">{{ form.contact_name.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="{{ form.contact_phone.id_for_label }}" class="form-label small fw-semibold">Coordinator Contact Telephone *</label>
+                            {{ form.contact_phone }}
+                            {% if form.contact_phone.errors %}<div class="text-danger small">{{ form.contact_phone.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <label for="{{ form.notes.id_for_label }}" class="form-label small fw-semibold">Doctor Name / Clinical Case Notes (Optional)</label>
+                            {{ form.notes }}
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded border mb-4">
+                        <div class="form-check">
+                            {{ form.consent }}
+                            <label class="form-check-label small fw-semibold" for="{{ form.consent.id_for_label }}">
+                                I confirm that this is a genuine medical requirement and consent to publishing this emergency request to alert nearby voluntary blood donors. *
+                            </label>
+                            {% if form.consent.errors %}<div class="text-danger small mt-1">{{ form.consent.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-emergency btn-lg w-100 py-3 shadow">
+                        <i class="bi bi-broadcast me-2"></i> Submit & Dispatch Emergency Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('form input:not([type=checkbox]), form select, form textarea').forEach(function (el) {
+            el.classList.add('form-control');
+        });
+        document.querySelectorAll('form select').forEach(function (el) {
+            el.classList.add('form-select');
+        });
+        const chk = document.querySelector('form input[type=checkbox]');
+        if (chk) chk.classList.add('form-check-input');
+    });
+</script>
+{% endblock %}

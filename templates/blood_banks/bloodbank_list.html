@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}Certified Blood Banks Directory & Map — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <span class="badge bg-primary-subtle text-primary px-2 py-1 mb-1 fw-bold text-uppercase">Healthcare Infrastructure</span>
+            <h2 class="fw-bold mb-1">Blood Bank Directory & Live Map</h2>
+            <p class="text-secondary mb-0">Certified government and charitable transfusion facilities with verified component inventory.</p>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="card card-lifedrop p-3 mb-4 bg-light border-0">
+        <form method="GET" class="row g-2 align-items-end">
+            <div class="col-md-5 col-6">
+                <label class="form-label small fw-semibold">City / Location</label>
+                <input type="text" name="city" class="form-control form-control-sm" placeholder="e.g. New Delhi, Mumbai, Bengaluru" value="{{ selected_city }}">
+            </div>
+            <div class="col-md-4 col-6">
+                <label class="form-label small fw-semibold">Blood Group in Stock</label>
+                <select name="blood_group" class="form-select form-select-sm">
+                    <option value="">Any Available Group</option>
+                    {% for bg_val, bg_label in form.blood_group.field.choices %}
+                        {% if bg_val %}
+                            <option value="{{ bg_val }}" {% if selected_blood_group == bg_val %}selected{% endif %}>{{ bg_label }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-danger btn-sm w-100">
+                    <i class="bi bi-funnel me-1"></i> Filter Blood Banks
+                </button>
+                <a href="{% url 'bloodbank_list' %}" class="btn btn-outline-secondary btn-sm" title="Clear Filters">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- OpenStreetMap Leaflet Container -->
+    <div class="card card-lifedrop p-2 mb-4">
+        <div class="d-flex align-items-center justify-content-between p-2">
+            <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Interactive Facility Map (OpenStreetMap)</h6>
+            <small class="text-secondary">Click markers for details & contacts</small>
+        </div>
+        <div id="bloodbank-map" data-markers='{{ map_markers_json|safe }}'></div>
+    </div>
+
+    <!-- Blood Banks Grid -->
+    <div class="row g-4 mt-2">
+        {% if page_obj %}
+            {% for bank in page_obj %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-lifedrop h-100 p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-success-subtle text-success py-1 px-2">
+                                <i class="bi bi-patch-check-fill me-1"></i> Certified Bank
+                            </span>
+                            <span class="text-secondary small"><i class="bi bi-geo-alt text-danger me-1"></i> {{ bank.city }}</span>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-1">{{ bank.name }}</h5>
+                        <p class="text-secondary small mb-3">{{ bank.address }}</p>
+
+                        <div class="bg-light p-2 rounded small mb-3">
+                            <div class="mb-1"><strong>Hours:</strong> {{ bank.operating_hours }}</div>
+                            <div><strong>Phone:</strong> <a href="tel:{{ bank.contact_phone }}" class="text-danger fw-semibold text-decoration-none">{{ bank.contact_phone }}</a></div>
+                        </div>
+
+                        <!-- Inventory Preview Pills -->
+                        {% if bank.inventories.all %}
+                            <div class="mb-3">
+                                <small class="text-muted d-block mb-1 fw-semibold">Reported Stock Available:</small>
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% for inv in bank.inventories.all %}
+                                        {% if inv.units_available > 0 %}
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle" title="{{ inv.units_available }} units available">
+                                                {{ inv.blood_group }}: <strong>{{ inv.units_available }}u</strong>
+                                            </span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <a href="tel:{{ bank.contact_phone }}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-telephone me-1"></i> Call
+                            </a>
+                            <a href="{% url 'bloodbank_detail' bank.id %}" class="btn btn-sm btn-outline-navy">
+                                View Full Inventory &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="card card-lifedrop p-5 text-center">
+                    <i class="bi bi-hospital text-muted fs-1 mb-2"></i>
+                    <h5 class="fw-bold">No Blood Banks Found</h5>
+                    <p class="text-secondary small">No certified facilities match your location filter. Try searching for major metropolitan centers.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav class="mt-5" aria-label="Blood bank pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link text-danger" href="?page={{ page_obj.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_blood_group %}&blood_group={{ selected_blood_group }}{% endif %}">&laquo; Previous</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-danger" href="?page={{ page_obj.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_blood_group %}&blood_group={{ selected_blood_group }}{% endif %}">Next &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

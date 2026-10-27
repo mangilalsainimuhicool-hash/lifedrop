@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ bank.name }} — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Main Blood Bank Profile -->
+        <div class="col-lg-8">
+            <div class="card card-lifedrop p-4 p-md-5 mb-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <span class="badge bg-success-subtle text-success py-1 px-2 mb-2">
+                            <i class="bi bi-patch-check-fill me-1"></i> Certified Transfusion Facility
+                        </span>
+                        <h2 class="fw-bold mb-1">{{ bank.name }}</h2>
+                        <p class="text-secondary mb-0"><i class="bi bi-geo-alt-fill text-danger me-1"></i> {{ bank.address }}, {{ bank.city }}, {{ bank.state }}</p>
+                    </div>
+                </div>
+
+                <div class="row g-3 my-3">
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block">Operating Schedule</small>
+                            <span class="fw-bold text-dark"><i class="bi bi-clock-fill text-danger me-1"></i> {{ bank.operating_hours }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block">Emergency Dispatch Telephone</small>
+                            <a href="tel:{{ bank.contact_phone }}" class="fw-bold text-danger text-decoration-none fs-6">
+                                <i class="bi bi-telephone-fill me-1"></i> {{ bank.contact_phone }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complete Inventory Table -->
+                <h5 class="fw-bold text-dark mt-4 mb-3"><i class="bi bi-clipboard2-pulse text-danger me-2"></i> Real-time Verified Blood Stock</h5>
+                {% if inventories %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Blood Group</th>
+                                    <th>Units Available</th>
+                                    <th>Status</th>
+                                    <th>Last Confirmed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for inv in inventories %}
+                                    <tr>
+                                        <td>
+                                            <span class="blood-badge blood-badge-sm me-2">{{ inv.blood_group }}</span>
+                                            <strong>{{ inv.blood_group }}</strong>
+                                        </td>
+                                        <td>
+                                            <span class="fs-6 fw-bold {% if inv.units_available > 5 %}text-success{% elif inv.units_available > 0 %}text-warning{% else %}text-danger{% endif %}">
+                                                {{ inv.units_available }} Unit(s)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if inv.units_available > 5 %}
+                                                <span class="badge bg-success-subtle text-success">In Stock</span>
+                                            {% elif inv.units_available > 0 %}
+                                                <span class="badge bg-warning-subtle text-warning">Critical Stock</span>
+                                            {% else %}
+                                                <span class="badge bg-danger-subtle text-danger">Out of Stock</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="small text-muted">
+                                            {{ inv.last_updated|timesince }} ago
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted small">No detailed component breakdown reported yet for this center. Please confirm inventory directly by telephone.</p>
+                {% endif %}
+
+                <!-- Clinical Caution -->
+                <div class="alert alert-clinical-disclaimer mt-4 mb-0">
+                    <div class="fw-bold text-danger mb-1"><i class="bi bi-info-circle me-1"></i> Physical Verification Reminder</div>
+                    <div class="small text-secondary">
+                        Blood component inventory fluctuates rapidly with emergency surgical demands. We recommend contacting the blood bank desk directly before transit to reserve required units and coordinate donor cross-matching.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Actions & Map Link -->
+        <div class="col-lg-4">
+            <div class="card card-lifedrop p-4 mb-4">
+                <h5 class="fw-bold mb-3">Facility Actions</h5>
+                <a href="tel:{{ bank.contact_phone }}" class="btn btn-emergency w-100 mb-2 py-2">
+                    <i class="bi bi-telephone-outbound-fill me-1"></i> Call Blood Bank Desk
+                </a>
+                {% if bank.latitude and bank.longitude %}
+                    <a href="https://www.openstreetmap.org/?mlat={{ bank.latitude }}&mlon={{ bank.longitude }}#map=16/{{ bank.latitude }}/{{ bank.longitude }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-navy w-100 mb-2 py-2">
+                        <i class="bi bi-map-fill me-1"></i> View on OpenStreetMap
+                    </a>
+                    <a href="https://maps.google.com/?q={{ bank.latitude }},{{ bank.longitude }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary w-100 py-2">
+                        <i class="bi bi-signpost-2 me-1"></i> Get Driving Directions
+                    </a>
+                {% endif %}
+                {% if bank.website %}
+                    <a href="{{ bank.website }}" target="_blank" rel="noopener noreferrer" class="btn btn-link text-danger w-100 mt-2 small text-decoration-none">
+                        Visit Official Website &rarr;
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="card card-lifedrop p-4 bg-light border-0">
+                <h6 class="fw-bold mb-2">Need Blood from this Facility?</h6>
+                <p class="text-secondary small mb-3">Post an urgent request to rally voluntary donors to replace or donate blood at this exact facility.</p>
+                <a href="{% url 'request_create' %}" class="btn btn-outline-danger btn-sm w-100">Post Emergency Request</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

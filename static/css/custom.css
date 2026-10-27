@@ -1,0 +1,248 @@
+:root {
+    --ld-primary-red: #c8102e;
+    --ld-dark-red: #990011;
+    --ld-light-red: #fee2e2;
+    --ld-gradient-red: linear-gradient(135deg, #c8102e 0%, #8b0000 100%);
+    --ld-navy: #0f172a;
+    --ld-navy-light: #1e293b;
+    --ld-slate: #64748b;
+    --ld-light-bg: #f8fafc;
+    --ld-card-border: #e2e8f0;
+    --ld-radius: 12px;
+    --ld-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    --ld-shadow-hover: 0 10px 25px rgba(200, 16, 46, 0.12);
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--ld-light-bg);
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Accessibility & Focus States */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--ld-primary-red) !important;
+    outline-offset: 2px !important;
+}
+
+/* Brand Navbar */
+.navbar-lifedrop {
+    background-color: var(--ld-navy);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.navbar-brand-badge {
+    background-color: var(--ld-primary-red);
+    color: #fff;
+    font-weight: 800;
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+}
+
+/* Hero Section */
+.hero-emergency {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #3b070e 100%);
+    color: #ffffff;
+    padding: 4.5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-emergency::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200, 16, 46, 0.18) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Buttons */
+.btn-emergency {
+    background-color: var(--ld-primary-red);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-emergency:hover, .btn-emergency:focus {
+    background-color: var(--ld-dark-red);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(200, 16, 46, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-outline-navy {
+    color: var(--ld-navy);
+    border: 2px solid var(--ld-navy);
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.btn-outline-navy:hover {
+    background-color: var(--ld-navy);
+    color: #ffffff;
+}
+
+/* Cards */
+.card-lifedrop {
+    background: #ffffff;
+    border-radius: var(--ld-radius);
+    border: 1px solid var(--ld-card-border);
+    box-shadow: var(--ld-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-lifedrop:hover {
+    box-shadow: var(--ld-shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Blood Group Badges */
+.blood-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--ld-gradient-red);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 10px rgba(200, 16, 46, 0.25);
+}
+
+.blood-badge-sm {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Priority Indicators */
+.badge-priority-urgent {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    font-weight: 700;
+}
+
+.badge-priority-high {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+    font-weight: 600;
+}
+
+.badge-priority-normal {
+    background-color: #e0f2fe;
+    color: #075985;
+    border: 1px solid #bae6fd;
+    font-weight: 600;
+}
+
+/* Status Progression Bar */
+.status-tracker {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 2rem 0;
+}
+
+.status-tracker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background-color: #e2e8f0;
+    z-index: 1;
+    transform: translateY(-50%);
+}
+
+.status-step {
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+    text-align: center;
+    padding: 0 0.5rem;
+}
+
+.status-step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.status-step.completed .status-step-icon {
+    background-color: #10b981;
+    color: #ffffff;
+}
+
+.status-step.active .status-step-icon {
+    background-color: var(--ld-primary-red);
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.2);
+}
+
+/* Clinical Safety Alert Box */
+.alert-clinical-disclaimer {
+    background-color: #f8fafc;
+    border-left: 4px solid var(--ld-primary-red);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+/* Leaflet Map */
+#bloodbank-map {
+    height: 420px;
+    border-radius: var(--ld-radius);
+    border: 1px solid var(--ld-card-border);
+    z-index: 10;
+}
+
+/* Footer */
+.footer-lifedrop {
+    background-color: var(--ld-navy);
+    color: #94a3b8;
+    margin-top: 4rem;
+    padding-top: 3.5rem;
+    padding-bottom: 1.5rem;
+    border-top: 3px solid var(--ld-primary-red);
+}
+
+.footer-lifedrop a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.footer-lifedrop a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}

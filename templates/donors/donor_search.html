@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Find Voluntary Donors — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <span class="badge bg-danger-subtle text-danger px-2 py-1 mb-1 fw-bold text-uppercase">Voluntary Directory</span>
+            <h2 class="fw-bold mb-1">Search Available Blood Donors</h2>
+            <p class="text-secondary mb-0">Discover verified voluntary donors in your locality ready for emergency response.</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <a href="{% url 'register' %}?role=DONOR" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-heart-pulse-fill me-1"></i> Register as a Volunteer Donor
+            </a>
+        </div>
+    </div>
+
+    <!-- Search Form Filter -->
+    <div class="card card-lifedrop p-3 mb-4 bg-light border-0">
+        <form method="GET" class="row g-2 align-items-end">
+            <div class="col-md-4 col-6">
+                <label class="form-label small fw-semibold">Blood Group</label>
+                <select name="blood_group" class="form-select form-select-sm">
+                    <option value="">All Blood Groups</option>
+                    {% for bg_val, bg_label in form.blood_group.field.choices %}
+                        {% if bg_val %}
+                            <option value="{{ bg_val }}" {% if selected_blood_group == bg_val %}selected{% endif %}>{{ bg_label }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 col-6">
+                <label class="form-label small fw-semibold">City / District</label>
+                <input type="text" name="city" class="form-control form-control-sm" placeholder="e.g. Mumbai, Bengaluru" value="{{ selected_city }}">
+            </div>
+            <div class="col-md-2 col-6">
+                <div class="form-check pt-3">
+                    <input class="form-check-input" type="checkbox" name="only_available" value="true" id="filterAvailable" {% if request.GET.only_available or 'only_available' not in request.GET %}checked{% endif %}>
+                    <label class="form-check-label small fw-semibold" for="filterAvailable">
+                        Available Only
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 d-flex gap-2">
+                <button type="submit" class="btn btn-danger btn-sm w-100">
+                    <i class="bi bi-search me-1"></i> Search
+                </button>
+                <a href="{% url 'donor_search' %}" class="btn btn-outline-secondary btn-sm" title="Clear Filters">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Privacy Banner if anonymous -->
+    {% if is_anonymous_viewer %}
+        <div class="alert alert-light border d-flex align-items-center mb-4 p-3 rounded" role="alert">
+            <i class="bi bi-shield-lock-fill text-danger fs-4 me-3"></i>
+            <div class="small">
+                <strong>Donor Privacy Protected:</strong> Direct phone numbers and residential addresses are safeguarded from public crawlers.
+                <a href="{% url 'login' %}?next={{ request.get_full_path }}" class="alert-link text-danger fw-bold ms-1">Log in or create a free account</a> to coordinate with verified donors.
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Donors Cards Grid -->
+    <div class="row g-4">
+        {% if page_obj %}
+            {% for donor in page_obj %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-lifedrop h-100 p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="blood-badge">{{ donor.blood_group }}</span>
+                            <div class="text-end">
+                                {% if donor.is_available %}
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle py-1 px-2">
+                                        <i class="bi bi-check-circle me-1"></i> Available
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary py-1 px-2">
+                                        Paused
+                                    </span>
+                                {% endif %}
+                                {% if donor.is_verified %}
+                                    <div class="text-success small mt-1" title="Blood typing verified by health center">
+                                        <i class="bi bi-patch-check-fill"></i> Verified
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mb-1">
+                            {{ donor.user.first_name }} {{ donor.user.last_name|slice:":1" }}.
+                        </h5>
+                        <p class="text-secondary small mb-3">
+                            <i class="bi bi-geo-alt text-danger me-1"></i> {{ donor.city }}, {{ donor.state }}
+                        </p>
+
+                        <div class="bg-light p-2 rounded small mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Eligibility:</span>
+                                <span class="fw-semibold {% if donor.is_eligible %}text-success{% else %}text-warning{% endif %}">
+                                    {{ donor.eligibility_status_display }}
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Last Donated:</span>
+                                <span>{{ donor.last_donation_date|default:"First-time Volunteer" }}</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-2 border-top">
+                            {% if is_anonymous_viewer %}
+                                <a href="{% url 'login' %}?next={{ request.get_full_path }}" class="btn btn-sm btn-outline-danger w-100">
+                                    <i class="bi bi-lock me-1"></i> Log In to Contact
+                                </a>
+                            {% else %}
+                                <a href="{% url 'donor_detail' donor.id %}" class="btn btn-sm btn-outline-navy w-100">
+                                    <i class="bi bi-person-lines-fill me-1"></i> View Profile & Contact
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="card card-lifedrop p-5 text-center">
+                    <i class="bi bi-person-x text-muted fs-1 mb-2"></i>
+                    <h5 class="fw-bold">No Donors Found</h5>
+                    <p class="text-secondary small">No voluntary donors matched the chosen criteria. Try searching without the city filter or post an emergency request.</p>
+                    <div>
+                        <a href="{% url 'request_create' %}" class="btn btn-emergency btn-sm">Post an Emergency Request</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav class="mt-5" aria-label="Donor pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link text-danger" href="?page={{ page_obj.previous_page_number }}{% if selected_blood_group %}&blood_group={{ selected_blood_group }}{% endif %}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if request.GET.only_available %}&only_available={{ request.GET.only_available }}{% endif %}">&laquo; Previous</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-danger" href="?page={{ page_obj.next_page_number }}{% if selected_blood_group %}&blood_group={{ selected_blood_group }}{% endif %}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if request.GET.only_available %}&only_available={{ request.GET.only_available }}{% endif %}">Next &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

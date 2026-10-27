@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Donor Eligibility & Deferral Guidelines — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="max-w-900 mx-auto">
+        <span class="badge bg-danger text-uppercase px-3 py-1 mb-2 fw-bold">Clinical Safety First</span>
+        <h1 class="fw-bold mb-3">Blood Donor Eligibility Guidelines</h1>
+        <p class="lead text-secondary mb-4">
+            Protecting both blood donors and recipients is the foremost priority in transfusion medicine. Review standard clinical criteria before pledging your donation.
+        </p>
+
+        <!-- General Qualifications -->
+        <div class="card card-lifedrop p-4 mb-4">
+            <h4 class="fw-bold text-dark mb-3"><i class="bi bi-person-check-fill text-success me-2"></i> Who Can Donate?</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded h-100">
+                        <h6 class="fw-bold"><i class="bi bi-calendar3 text-danger me-1"></i> Age Requirement</h6>
+                        <p class="text-secondary small mb-0">Must be between 18 and 65 years old (regular donors may donate up to 70 with physician consent).</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded h-100">
+                        <h6 class="fw-bold"><i class="bi bi-speedometer text-danger me-1"></i> Minimum Weight</h6>
+                        <p class="text-secondary small mb-0">Must weigh at least 45 kg (approx. 100 lbs) for safe 350 mL whole blood collection; 50 kg for 450 mL.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded h-100">
+                        <h6 class="fw-bold"><i class="bi bi-hourglass-split text-danger me-1"></i> Donation Intervals (Cooldown)</h6>
+                        <p class="text-secondary small mb-0">At least <strong>90 days (3 months)</strong> between whole blood donations for males, and 120 days (4 months) for females.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded h-100">
+                        <h6 class="fw-bold"><i class="bi bi-droplet-half text-danger me-1"></i> Hemoglobin Levels</h6>
+                        <p class="text-secondary small mb-0">Hemoglobin must test at or above 12.5 g/dL before collection to prevent post-donation fatigue or anemia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Temporary vs Permanent Deferrals -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="card card-lifedrop p-4 h-100 border-start border-4 border-warning">
+                    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-clock-history text-warning me-2"></i> Temporary Deferrals</h5>
+                    <ul class="text-secondary small d-flex flex-column gap-2 mb-0">
+                        <li><strong>Recent Cold / Fever / Flu:</strong> Wait at least 7 days after complete recovery and cessation of antibiotics.</li>
+                        <li><strong>Dental Extraction / Surgery:</strong> Defer for 3 to 7 days depending on procedure; wait 6 months for major surgery.</li>
+                        <li><strong>Tattoo / Body Piercing:</strong> Wait 6 to 12 months after receiving a tattoo or piercing.</li>
+                        <li><strong>Pregnancy / Lactation:</strong> Defer during pregnancy and for 12 months following childbirth.</li>
+                        <li><strong>Vaccinations:</strong> Deferral depends on vaccine type (wait 14 days after non-live vaccines; 4 weeks for live attenuated).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card card-lifedrop p-4 h-100 border-start border-4 border-danger">
+                    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-x-octagon-fill text-danger me-2"></i> Permanent Deferrals</h5>
+                    <ul class="text-secondary small d-flex flex-column gap-2 mb-0">
+                        <li>Individuals diagnosed with or testing positive for Hepatitis B, Hepatitis C, or HIV.</li>
+                        <li>Chronic cardiac diseases, severe chronic kidney disease, or bleeding disorders (e.g. Hemophilia).</li>
+                        <li>History of injectable illicit drug use.</li>
+                        <li>Active or past malignancies (cancers), unless cleared by a specialist oncologist.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mandatory Disclaimer -->
+        <div class="alert-clinical-disclaimer border border-danger p-3 rounded">
+            <h6 class="fw-bold text-danger mb-1"><i class="bi bi-shield-exclamation me-1"></i> Mandatory Clinical Protocol Notice</h6>
+            <p class="small text-secondary mb-0">
+                Self-evaluation through LifeDrop does not constitute medical clearance. Licensed phlebotomists and medical officers at certified blood banks or hospital transfusion services will conduct a pre-donation medical history screening, pulse check, blood pressure check, and hemoglobin test prior to any collection.
+            </p>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'register' %}?role=DONOR" class="btn btn-emergency btn-lg px-4">
+                I Meet the Criteria — Register as a Donor
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

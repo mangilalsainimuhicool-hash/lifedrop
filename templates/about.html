@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us — LifeDrop Emergency Blood Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <span class="badge bg-danger text-uppercase px-3 py-1 mb-2 fw-bold">Our Humanitarian Mission</span>
+            <h1 class="fw-bold mb-4">Every Drop Counts. Every Second Matters.</h1>
+            
+            <p class="lead text-secondary">
+                LifeDrop was founded with a singular, vital mission: to eliminate fatal delays during medical emergencies by intelligently coordinating voluntary blood donors and certified blood banks in real time.
+            </p>
+
+            <h3 class="fw-bold mt-5 mb-3">The Problem We Solve</h3>
+            <p class="text-secondary">
+                In surgical theaters, emergency trauma wards, and cancer care units, timely access to blood is literally the difference between life and death. Traditional blood appeals often rely on frantic social media forwarding or disorganized phone chains, creating information friction, duplicate responses, and privacy vulnerabilities.
+            </p>
+            <p class="text-secondary">
+                LifeDrop creates a structured, verified, privacy-preserving emergency channel. Requesters log validated emergency requirements, and matching voluntary donors in the exact geographic proximity receive immediate notifications, while protecting patient and donor personal data.
+            </p>
+
+            <h3 class="fw-bold mt-5 mb-3">Our Core Principles</h3>
+            <div class="row g-4 mt-1">
+                <div class="col-md-6">
+                    <div class="card card-lifedrop p-3 h-100">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-shield-lock-fill text-danger fs-4 me-2"></i>
+                            <h5 class="fw-bold mb-0">Privacy First</h5>
+                        </div>
+                        <p class="text-secondary small mb-0">
+                            Donor phone numbers and home addresses are never exposed to anonymous web scrapers or unverified users. We practice strict zero-leakage contact coordination.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-lifedrop p-3 h-100">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-heart-pulse-fill text-danger fs-4 me-2"></i>
+                            <h5 class="fw-bold mb-0">Clinical Integrity</h5>
+                        </div>
+                        <p class="text-secondary small mb-0">
+                            We never assume universal compatibility or replace clinical cross-matching. We coordinate willing volunteers; certified hospital laboratories conduct standard medical validations.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-lifedrop p-3 h-100">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-check-all text-danger fs-4 me-2"></i>
+                            <h5 class="fw-bold mb-0">Volunteer Non-Commercial</h5>
+                        </div>
+                        <p class="text-secondary small mb-0">
+                            LifeDrop advocates for 100% voluntary, unremunerated blood donation, strictly complying with national transfusion standards and WHO ethics.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-lifedrop p-3 h-100">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-geo-alt-fill text-danger fs-4 me-2"></i>
+                            <h5 class="fw-bold mb-0">Hyper-Local Proximity</h5>
+                        </div>
+                        <p class="text-secondary small mb-0">
+                            Emergencies have short deadlines. Our matching prioritizes active donors and blood bank inventories within the immediate city and hospital radius.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card card-lifedrop p-4 mb-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-info-circle text-danger me-2"></i> Quick Facts</h5>
+                <ul class="list-unstyled text-secondary small d-flex flex-column gap-3 mb-0">
+                    <li><i class="bi bi-dot text-danger fs-5"></i> <strong>Every 2 seconds</strong> someone in our region requires whole blood or blood components.</li>
+                    <li><i class="bi bi-dot text-danger fs-5"></i> A single whole blood donation takes just <strong>10 to 15 minutes</strong>.</li>
+                    <li><i class="bi bi-dot text-danger fs-5"></i> Donated red blood cells have a shelf life of approximately <strong>35 to 42 days</strong>.</li>
+                    <li><i class="bi bi-dot text-danger fs-5"></i> Platelets must be used within <strong>5 days</strong> of collection.</li>
+                </ul>
+            </div>
+
+            <div class="card card-lifedrop p-4 text-center bg-danger text-white">
+                <i class="bi bi-droplet-fill fs-1 mb-2"></i>
+                <h5 class="fw-bold">Ready to Save Lives?</h5>
+                <p class="small opacity-90 mb-3">Join our network of verified donors today. When an emergency happens near you, your blood can save a family member or child.</p>
+                <a href="{% url 'register' %}?role=DONOR" class="btn btn-light fw-bold text-danger w-100">Register as a Donor</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

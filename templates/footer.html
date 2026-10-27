@@ -1,0 +1,66 @@
+<footer class="footer-lifedrop">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <!-- Brand & Mission -->
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="navbar-brand-badge me-2 fs-5">
+                        <i class="bi bi-droplet-fill"></i> LifeDrop
+                    </span>
+                </div>
+                <p class="text-secondary small mb-3">
+                    <strong>Every Drop Counts. Every Second Matters.</strong><br>
+                    LifeDrop is an emergency coordination network dedicated to connecting critical blood requesters with voluntary, verified donors and certified regional blood banks.
+                </p>
+                <div class="d-flex gap-3">
+                    <span class="badge bg-danger p-2"><i class="bi bi-telephone-fill me-1"></i> Emergency Hotline: 1800-BLOOD-HELP</span>
+                </div>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="text-white fw-bold mb-3">Services</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2">
+                    <li><a href="{% url 'request_create' %}">Request Blood</a></li>
+                    <li><a href="{% url 'request_list' %}">Active Emergencies</a></li>
+                    <li><a href="{% url 'donor_search' %}">Find Donors</a></li>
+                    <li><a href="{% url 'bloodbank_list' %}">Blood Banks Directory</a></li>
+                    <li><a href="{% url 'request_track' %}">Track Request ID</a></li>
+                </ul>
+            </div>
+
+            <!-- Guidelines & Knowledge -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="text-white fw-bold mb-3">Information</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2">
+                    <li><a href="{% url 'eligibility_guide' %}">Eligibility Checker</a></li>
+                    <li><a href="{% url 'about' %}">About LifeDrop</a></li>
+                    <li><a href="{% url 'contact' %}">Support & Contact</a></li>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy & Health Data</a></li>
+                    <li><a href="{% url 'terms_of_service' %}">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <!-- Mandatory Safety & Clinical Notice -->
+            <div class="col-lg-4 col-md-6">
+                <div class="alert-clinical-disclaimer border border-secondary text-light bg-dark bg-opacity-50">
+                    <div class="d-flex align-items-center text-danger fw-bold mb-1">
+                        <i class="bi bi-shield-exclamation me-1 fs-5"></i> Clinical Notice
+                    </div>
+                    <p class="mb-0" style="font-size: 0.78rem; line-height: 1.4;">
+                        LifeDrop is a humanitarian volunteer coordination platform and does not maintain clinical blood storage or perform medical cross-matching. Pre-transfusion testing, blood typing validation, and compatibility checks must always be conducted by certified healthcare laboratories.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top border-secondary pt-3 mt-3 d-flex flex-column flex-md-row justify-content-between align-items-center text-secondary small">
+            <div>&copy; 2026 LifeDrop Foundation. All rights reserved.</div>
+            <div class="d-flex gap-3 mt-2 mt-md-0">
+                <a href="{% url 'privacy_policy' %}">Privacy</a>
+                <a href="{% url 'terms_of_service' %}">Terms</a>
+                <a href="{% url 'contact' %}">Help Desk</a>
+            </div>
+        </div>
+    </div>
+</footer>

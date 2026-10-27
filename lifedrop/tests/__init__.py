@@ -1,0 +1,1 @@
+# LifeDrop automated test suite

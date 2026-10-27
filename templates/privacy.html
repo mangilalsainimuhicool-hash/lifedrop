@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy & Health Data Protection — LifeDrop{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="max-w-900 mx-auto">
+        <span class="badge bg-secondary text-uppercase px-3 py-1 mb-2 fw-bold">Data Governance</span>
+        <h1 class="fw-bold mb-3">Privacy Policy & Health Information Handling</h1>
+        <p class="text-secondary mb-4">Effective Date: October 27, 2026</p>
+
+        <div class="card card-lifedrop p-4 mb-4">
+            <h5 class="fw-bold text-dark">1. Core Commitment: Zero Public Scraping of Donor Contacts</h5>
+            <p class="text-secondary small">
+                At LifeDrop, we strictly safeguard personal identifying information. Unauthenticated public visitors or automated web spiders can never view donor telephone numbers or detailed residential addresses. Only authenticated users with legitimate, verified emergency coordination roles may request contact with donors.
+            </p>
+
+            <h5 class="fw-bold text-dark mt-4">2. Information We Collect</h5>
+            <ul class="text-secondary small">
+                <li><strong>Account Data:</strong> Name, verified email address, emergency contact phone number, and account role.</li>
+                <li><strong>Donor Medical Profiles:</strong> Blood group, date of birth (for age compliance), city/district, self-reported last donation date, and availability status.</li>
+                <li><strong>Emergency Request Data:</strong> Patient name, hospital name, attending physician case notes, units needed, and coordinator contact details.</li>
+                <li><strong>Audit & Telemetry Logs:</strong> Timestamped action events, authorized actor IDs, and IP addresses to maintain security forensics and combat misuse.</li>
+            </ul>
+
+            <h5 class="fw-bold text-dark mt-4">3. Explicit Consent & Control</h5>
+            <p class="text-secondary small">
+                Donors maintain absolute control over their availability. You can toggle your emergency status to "Temporarily Paused" at any time from your dashboard, which immediately hides your profile from emergency search results.
+            </p>
+
+            <h5 class="fw-bold text-dark mt-4">4. No Commercial Sharing or Sale of Data</h5>
+            <p class="text-secondary small mb-0">
+                LifeDrop is a humanitarian coordination network. We never sell, lease, or monetize personal health data or contact lists to pharmaceutical marketers, data brokers, or third-party advertisers.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
