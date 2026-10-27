@@ -1,5 +1,6 @@
 from datetime import date, timedelta
-from django.core.management.base import BaseCommand
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 from lifedrop.models import (
     User,
@@ -19,6 +20,9 @@ class Command(BaseCommand):
     help = "Seeds initial realistic reference data, demo users, certified blood banks, and verified donors for LifeDrop."
 
     def handle(self, *args, **options):
+        if not settings.DEBUG:
+            raise CommandError("Demo data can only be seeded when DEBUG is enabled.")
+
         self.stdout.write("Seeding LifeDrop database...")
 
         # 1. Superuser / Admin
@@ -36,7 +40,7 @@ class Command(BaseCommand):
         if created:
             admin_user.set_password("AdminPass123!")
             admin_user.save()
-            self.stdout.write(self.style.SUCCESS("Created Superuser: admin / AdminPass123!"))
+            self.stdout.write(self.style.SUCCESS("Created demo superuser: admin"))
 
         # 2. Hospital Staff User
         staff_user, created = User.objects.get_or_create(
@@ -53,7 +57,7 @@ class Command(BaseCommand):
         if created:
             staff_user.set_password("StaffPass123!")
             staff_user.save()
-            self.stdout.write(self.style.SUCCESS("Created Hospital Staff: staff_dr_sharma / StaffPass123!"))
+            self.stdout.write(self.style.SUCCESS("Created demo hospital staff: staff_dr_sharma"))
 
         # 3. Requester User
         requester_user, created = User.objects.get_or_create(
@@ -69,7 +73,7 @@ class Command(BaseCommand):
         if created:
             requester_user.set_password("RequesterPass123!")
             requester_user.save()
-            self.stdout.write(self.style.SUCCESS("Created Requester: requester_priya / RequesterPass123!"))
+            self.stdout.write(self.style.SUCCESS("Created demo requester: requester_priya"))
 
         # 4. Verified Voluntary Donors
         donors_data = [

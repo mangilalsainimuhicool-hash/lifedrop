@@ -48,21 +48,6 @@ LifeDrop is a production-ready Django web application designed to bridge critica
 
 ---
 
-## 🔑 Pre-seeded Demo Credentials
-
-To test the application immediately, the database is pre-seeded with sample users:
-
-| Role | Username | Password | Notes |
-|---|---|---|---|
-| **Admin** | `admin` | `AdminPass123!` | Full superuser access to Django admin & staff console |
-| **Hospital Staff** | `staff_dr_sharma` | `StaffPass123!` | Verified healthcare staff console & donor verifications |
-| **Requester** | `requester_priya` | `RequesterPass123!` | Patient requester with active emergency requests |
-| **Donor (O+)** | `donor_arjun` | `DonorPass123!` | Verified donor in Mumbai with donation history |
-| **Donor (A+)** | `donor_sneha` | `DonorPass123!` | Verified donor in Mumbai |
-| **Donor (B+)** | `donor_vikram` | `DonorPass123!` | Verified donor in Bengaluru |
-| **Donor (O-)** | `donor_ananya` | `DonorPass123!` | Verified rare donor in New Delhi |
-| **Donor (AB+)**| `donor_karthik` | `DonorPass123!` | Verified donor in Hyderabad |
-
 ---
 
 ## 🛠️ Quickstart Installation & Execution
@@ -73,11 +58,12 @@ Ensure Python 3.10+ is installed:
 pip install -r requirements.txt
 ```
 
-### 2. Apply Migrations & Seed Data
+### 2. Apply Migrations & Seed Local Demo Data
 ```powershell
 python manage.py migrate
 python manage.py seed_data
 ```
+The seed command creates fictional demo users and records for local testing only. It refuses to run when `DEBUG` is disabled.
 
 ### 3. Run Automated Tests
 ```powershell
@@ -89,6 +75,17 @@ python manage.py test lifedrop.tests
 python manage.py runserver 127.0.0.1:8000
 ```
 Open your web browser at `http://127.0.0.1:8000/`.
+
+## Deploy on Render
+
+GitHub stores the source code; it does not run this Django application. The included `render.yaml` configures a Render web service. Before deploying, create a PostgreSQL database with your hosting provider and supply its connection URL as `DATABASE_URL` when Render requests it. Review the provider's current pricing and data-retention terms before creating a database.
+
+1. Push the `main` branch to GitHub.
+2. In Render, choose **New > Blueprint**, connect this repository, and follow the prompts.
+3. Provide the PostgreSQL connection URL for `DATABASE_URL`. Render generates `SECRET_KEY` and configures HTTPS settings from the blueprint.
+4. Open the Render service URL after the first deployment completes.
+
+Do not run `seed_data` in a deployed environment. It creates fictional demo accounts and is blocked when `DEBUG` is disabled. Do not enter real patient or donor information into a demo deployment; use an appropriately secured and reviewed production environment for sensitive data.
 
 ---
 
